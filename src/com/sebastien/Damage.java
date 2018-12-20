@@ -1,16 +1,16 @@
 package com.sebastien;
 
-public class Damage
+class Damage
 {
-    float m_fFlat              =    0.f;
-    float m_fPenetration       =    0.f;
-    float m_fForce             =    0.f;
-    float m_fMagicPenetration  =    0.f;
-    float m_MagicDamage        =    0.f;
+    float m_fFlat;
+    float m_fPenetration;
+    float m_fForce;
+    float m_fMagicPenetration;
+    float m_MagicDamage;
 
     boolean m_bIsMagic         =    false;
 
-    String m_szOutput = "";
+    private String m_szOutput = "";
 
     public Damage(Item source)
     {
@@ -25,11 +25,18 @@ public class Damage
         float crit = (float)Util.RandInt(1, 100);
         GameObject owner = source.GetOwner();
         if(owner == Globals.GetLocalPlayer()) {
+            m_fFlat *= 2;
             Player player = (Player) source.GetOwner();
             float chance = player.GetStats().FindAttribute("mLuck").GetFloat();
             if (crit <= chance) {
                 m_fFlat = m_fFlat * 1.5f;
                 m_szOutput = "Critical Strike!\n";
+            }
+            if(m_bIsMagic)
+            {
+                float mana = player.GetStats().FindAttribute("mMana").GetFloat();
+                mana -= 5.f;
+                player.GetStats().FindAttribute("mMana").SetFloat(mana);
             }
         }
         else
@@ -41,8 +48,10 @@ public class Damage
                 m_szOutput = "Critical Strike!\n";
             }
         }
+
+
     }
 
-    public String GetOutput() { return m_szOutput; }
+    String GetOutput() { return m_szOutput; }
 
 }

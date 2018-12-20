@@ -4,70 +4,68 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Visuals
-{
-    List<String> m_Elements = new ArrayList<>();
-    String m_szLastEvent;
-    Player localent;
+public class Visuals {
+    private List<String> m_Elements = new ArrayList<>();
+    private Player localent;
 
-    void GetHealth()
-    {
-        float health = localent.GetStats().FindAttribute("mHealth").GetFloat();
-        float maxhealth = localent.GetStats().FindAttribute("mMaxHealth").GetFloat();
-        float percentage = (health/maxhealth) * 100;
-        m_Elements.add("HP: " + Float.toString(percentage));
+    public Visuals() {
+
     }
 
-    void GetLevel()
-    {
+    private void GetHealth() {
+        float health = localent.GetStats().FindAttribute("mHealth").GetFloat();
+        m_Elements.add("HP: " + Float.toString(health));
+    }
+
+    private void GetLevel() {
         int level = localent.GetStats().FindAttribute("mLevel").GetInt();
         m_Elements.add("Level: " + Integer.toString(level));
     }
 
-    void GetMana()
-    {
+    private void GetMana() {
         float mana = localent.GetStats().FindAttribute("mMana").GetFloat();
         m_Elements.add("Mana: " + Float.toString(mana));
     }
 
-    void GetLocation()
-    {
-        m_Elements.add("Location: " + localent.GetLocation().GetName());
+    private void GetLocation() {
+        if (localent.GetLocation() != null)
+            m_Elements.add("Location: " + localent.GetLocation().GetName());
+        else
+            m_Elements.add("Location: None");
     }
 
-
-    void DrawHeader(String title)
-    {
-        int desiredlength = 75;
+    private void DrawHeader(String title) {
+        int desiredlength = 100;
         int strlength = title.length();
         int perside = (desiredlength - strlength) / 2;
-        for(int i = 0; i < perside; i++)
+        for (int i = 0; i < perside; i++)
             System.out.print("-");
         System.out.print(title);
-        for(int i = 0; i < perside; i++)
+        for (int i = 0; i < perside; i++)
             System.out.print("-");
         System.out.print("\n");
     }
 
-    void DrawHUD()
-    {
-        for(String element : m_Elements) {
+    private void DrawHUD() {
+        for (String element : m_Elements) {
             System.out.printf("|\t%s\t", element);
         }
         System.out.print("|\n");
     }
 
-    void DrawEncounter()
-    {
-        if(localent.GetLocation().GetInfo() == null)
+    private void DrawEncounter() {
+        if (localent.GetLocation() == null)
             return;
 
-        if(localent.GetLocation().GetInfo().GetEncounter() == null)
+        if (localent.GetLocation().GetInfo() == null)
             return;
+
+        if (localent.GetLocation().GetInfo().GetEncounter() == null)
+            return;
+
         DrawHeader("Encounter");
         Encounter encounter = localent.GetLocation().GetInfo().GetEncounter();
-        for(NPC npc : encounter.GetNPCs())
-        {
+        for (NPC npc : encounter.GetNPCs()) {
             float health = npc.GetStats().FindAttribute("mHealth").GetFloat();
             int level = npc.GetStats().FindAttribute("mLevel").GetInt();
 
@@ -80,17 +78,15 @@ public class Visuals
         DrawHeader("");
     }
 
-    void DrawInventoryItems()
-    {
-        if(localent.GetInventory() == null)
+    void DrawInventoryItems() {
+        if (localent.GetInventory() == null)
             return;
-        if(localent.GetInventory().GetItems().size() == 0)
+        if (localent.GetInventory().GetItems().size() == 0)
             return;
 
         DrawHeader("Inventory");
 
-        for(Item item : localent.GetInventory().GetItems())
-        {
+        for (Item item : localent.GetInventory().GetItems()) {
             System.out.print("| ");
             System.out.printf("[%s] ", Util.ItemTypeToString(item.GetType()));
             System.out.print(item.GetName());
@@ -100,17 +96,26 @@ public class Visuals
         DrawHeader("");
     }
 
-    void DrawStats()
-    {
-        if(localent.GetStats() == null)
+    void DrawStats() {
+        if (localent.GetStats() == null)
             return;
 
         DrawHeader("Attributes");
-        for(Attribute attribute : localent.GetStats().BaseAttributes)
-        {
+        for (Attribute attribute : localent.GetStats().BaseAttributes) {
             String name = attribute.GetName().substring(1);
             System.out.print("| ");
-            if(attribute.GetType() == TYPE.FLOAT)
+            if (attribute.GetType() == TYPE.FLOAT)
+                System.out.printf("[%s] ", Float.toString(attribute.GetFloat()));
+            else
+                System.out.printf("[%s] ", Integer.toString(attribute.GetInt()));
+            System.out.print(name);
+            System.out.print("\n");
+
+        }
+        for (Attribute attribute : localent.GetStats().AdditionalAttributes) {
+            String name = attribute.GetName().substring(1);
+            System.out.print("| ");
+            if (attribute.GetType() == TYPE.FLOAT)
                 System.out.printf("[%s]\t", Float.toString(attribute.GetFloat()));
             else
                 System.out.printf("[%s]\t", Integer.toString(attribute.GetInt()));
@@ -118,11 +123,11 @@ public class Visuals
             System.out.print("\n");
 
         }
-        for(Attribute attribute : localent.GetStats().AdditionalAttributes)
-        {
+
+        for (Attribute attribute : localent.GetRace().GetAttributes().AdditionalAttributes) {
             String name = attribute.GetName().substring(1);
             System.out.print("| ");
-            if(attribute.GetType() == TYPE.FLOAT)
+            if (attribute.GetType() == TYPE.FLOAT)
                 System.out.printf("[%s]\t", Float.toString(attribute.GetFloat()));
             else
                 System.out.printf("[%s]\t", Integer.toString(attribute.GetInt()));
@@ -134,39 +139,32 @@ public class Visuals
         DrawHeader("");
     }
 
-   void DrawCharacterCreation()
-    {
+    void DrawCharacterCreation() {
         DrawHeader("Character Creation");
-
     }
 
-    public void Draw() throws IOException, InterruptedException {
+    void Draw() throws IOException, InterruptedException {
         // Start drawing by clearing the screen
         Util.cls();
         DrawHeader("Information");
         DrawHUD();
         DrawHeader("");
-        System.out.printf("\n");
+        System.out.print("\n");
         DrawEncounter();
-        System.out.printf("\n");
-        //DrawInventoryItems();
-        //System.out.printf("\n");
+        System.out.print("\n");
 
 
     }
 
-    public void Update()
-    {
+    /**
+     * Updates all needed variables for the gui
+     */
+    public void Update() {
         localent = Globals.GetLocalPlayer();
         m_Elements.clear();
         GetHealth();
         GetLevel();
         GetMana();
         GetLocation();
-    }
-
-    public Visuals()
-    {
-
     }
 }

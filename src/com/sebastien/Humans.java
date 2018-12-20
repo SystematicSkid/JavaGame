@@ -5,9 +5,9 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Humans extends NPC
+class Humans extends NPC
 {
-    public Humans(Encounter encounter) throws IOException, ParseException {
+    Humans(Encounter encounter) throws IOException, ParseException {
         int rand = (int) Util.RandInt(0, Globals.Text.m_szNPCNames[1].length - 1);
         m_szName = Globals.Text.m_szNPCNames[1][rand];
         m_Race = new Human();

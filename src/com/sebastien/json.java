@@ -1,26 +1,24 @@
 package com.sebastien;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
 
-public class json {
+class json {
     static JSONParser parser = new JSONParser();
 
-    public json() throws IOException, ParseException {
+    public json() {
     }
 
-    public static Item GetItem(GameObject owner, String name, ITEMTYPE type) throws IOException, ParseException {
+    private static Item GetItem(GameObject owner, String name, ITEMTYPE type) throws IOException, ParseException {
         String file = Util.ItemTypeToString(type) + "_" + name;
         String path = ".\\items\\" + file + ".seb";
         String contents = new String(Files.readAllBytes(Paths.get(path)));
@@ -34,10 +32,10 @@ public class json {
         return new Item(owner, name, type, item, stats);
     }
 
-    public static Item GetRandomItem(GameObject owner) throws IOException, ParseException {
+    static Item GetRandomItem(GameObject owner) throws IOException, ParseException {
         List<String> files = new ArrayList<>();
         final File itemfolder = new File(".\\items\\");
-        for (final File fileEntry : itemfolder.listFiles()) {
+        for (final File fileEntry : Objects.requireNonNull(itemfolder.listFiles())) {
             files.add(fileEntry.getName());
         }
         String rand = files.get((int)(Math.random() * files.size()));
@@ -51,7 +49,7 @@ public class json {
     public static Item GetRandomItemType(GameObject owner, ITEMTYPE type) throws IOException, ParseException {
         List<String> files = new ArrayList<>();
         final File itemfolder = new File(".\\items\\");
-        for (final File fileEntry : itemfolder.listFiles()) {
+        for (final File fileEntry : Objects.requireNonNull(itemfolder.listFiles())) {
             files.add(fileEntry.getName());
         }
         ITEMTYPE itemtype = ITEMTYPE.UNKNOWN;

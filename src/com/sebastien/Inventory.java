@@ -20,11 +20,11 @@ enum ITEMTYPE
 
 class Item extends GameObject
 {
-    GameObject m_Owner;
-    Attributes m_Stats;
-    ITEMTYPE m_Type;
+    private GameObject m_Owner;
+    private Attributes m_Stats;
+    private ITEMTYPE m_Type;
 
-    void BuildStandardItemAttributes()
+    private void BuildStandardItemAttributes()
     {
         List<Attribute> ItemAttributes = new ArrayList<>(); // setting the default val on these doesnt even matter because we will be overriding them anyways
         ItemAttributes.add(new Attribute(TYPE.FLOAT, "mPhysicalDamage", 0.f));
@@ -37,18 +37,19 @@ class Item extends GameObject
         m_Stats = new Attributes(ItemAttributes);
     }
 
-    public ITEMTYPE GetType(){return m_Type;}
+    ITEMTYPE GetType(){return m_Type;}
     public Attributes GetStats() { return  m_Stats; }
-    public GameObject GetOwner() { return m_Owner; }
+    GameObject GetOwner() { return m_Owner; }
 
-    public void SetOwner(GameObject owner) { m_Owner = owner; }
+    void SetOwner(GameObject owner) { m_Owner = owner; }
 
     public Item(GameObject owner, String name, ITEMTYPE type, JSONObject jsonobject, JSONObject stats)
     {
+        super();
         m_Owner = owner;
         m_Type = type;
         BuildStandardItemAttributes();
-        boolean isMagic = (String)stats.get("magicdamage") != null;
+        boolean isMagic = stats.get("magicdamage") != null;
         if(!isMagic) {
             m_Stats.FindAttribute("mPhysicalDamage").SetFloat(Float.parseFloat((String) stats.get("physicaldamage")));
             m_Stats.FindAttribute("mPenetration").SetFloat(Float.parseFloat((String) stats.get("penetration")));
@@ -68,10 +69,10 @@ class Item extends GameObject
 
 class Inventory
 {
-    GameObject m_Owner;
+    private GameObject m_Owner;
     List<Item> m_Items = new ArrayList<>();
 
-    public List<Item> GetItems() {return m_Items;}
+    List<Item> GetItems() {return m_Items;}
 
     public Item FindItem(String name)
     {
@@ -89,7 +90,7 @@ class Inventory
         m_Items.add(item);
     }
 
-    public Inventory(GameObject owner)
+    Inventory(GameObject owner)
     {
         m_Owner = owner;
     }

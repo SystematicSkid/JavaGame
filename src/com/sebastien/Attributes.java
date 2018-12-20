@@ -12,13 +12,13 @@ enum TYPE
 
 class Attribute
 {
-	TYPE m_Type;
+	private TYPE m_Type;
 	String m_szName;
-	int m_iValue;
-	float m_fValue;
-	boolean m_bValue;
+	private int m_iValue;
+	private float m_fValue;
+	private boolean m_bValue;
 
-	public TYPE GetType()
+	TYPE GetType()
 	{
 		return m_Type;
 	}
@@ -43,7 +43,7 @@ class Attribute
 		return m_bValue;
 	}
 
-	public void SetInt(int val) { m_iValue = val;}
+	void SetInt(int val) { m_iValue = val;}
 	public void SetFloat(float val) {m_fValue = val;}
 	public void SetBool(boolean val) { m_bValue = val; }
 
@@ -73,9 +73,9 @@ class Attribute
 class Attributes
 {
 	List<Attribute> BaseAttributes = new ArrayList<>();
-	List<Attribute> AdditionalAttributes = new ArrayList<Attribute>();
+	List<Attribute> AdditionalAttributes = new ArrayList<>();
 
-	void BuildDefaultAttributes()
+	private void BuildDefaultAttributes()
 	{
 		BaseAttributes.add(new Attribute(TYPE.FLOAT, "mHealth", 100.f));
 		BaseAttributes.add(new Attribute(TYPE.FLOAT, "mMaxHealth", 100.f));
@@ -86,6 +86,7 @@ class Attributes
 		BaseAttributes.add(new Attribute(TYPE.FLOAT, "mLuck", 5.f));
 		BaseAttributes.add(new Attribute(TYPE.INT,   "mLevel", 1));
 		BaseAttributes.add(new Attribute(TYPE.FLOAT, "mMana", 25.f));
+		BaseAttributes.add(new Attribute(TYPE.FLOAT, "mMaxMana", 25.f));
 	}
 
 	public Attribute FindAttribute(String name)

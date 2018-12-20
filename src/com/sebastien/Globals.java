@@ -2,15 +2,8 @@ package com.sebastien;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
-import java.util.stream.Collectors;
-
-/* TODO: \u002a\u002f\u0065\u006e\u0075\u006d \u0065\u0041\u0063\u0074\u0069\u006f\u006e\u0073\u002f\u002a*/
-{
-	kAttack,
-	kRun,
-	kNone
-}
+import java.util.Base64;
+import java.util.Scanner;
 
 enum GAMESTATE
 {
@@ -20,7 +13,7 @@ enum GAMESTATE
 }
 
 
-public class Globals
+class Globals
 {
 	static private Player localplayer;
 	static private ObjectManager objectmanager;
@@ -30,6 +23,7 @@ public class Globals
 	static private Input input;
 	static private Visuals GUI;
 	static private ACTIONTYPE m_LastActionType;
+	static private boolean m_bInEncounter = false;
 
 	static private String m_szLastEvent;
 	static public void SetLastEvent(String str) { m_szLastEvent = str; }
@@ -40,6 +34,8 @@ public class Globals
 	static public Visuals GetGUI() { return GUI; }
 	static public ACTIONTYPE GetLastActionType() { return m_LastActionType; }
 	static public void SetLastActionType(ACTIONTYPE type) { m_LastActionType = type; }
+	static public boolean IsInEncounter() { return m_bInEncounter; }
+	static public void SetIsInEncounter(boolean b) { m_bInEncounter = b; }
 
 	static public Player GetLocalPlayer()
 	{

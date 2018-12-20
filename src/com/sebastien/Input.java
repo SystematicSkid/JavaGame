@@ -8,11 +8,12 @@ import java.util.List;
 import java.util.Scanner;
 
 class Input {
-    List<String> m_Parameters;
 
-    void GetInput() throws IOException, ParseException {
+    void GetInput() throws IOException, ParseException, InterruptedException {
         Scanner scan = Globals.GetScanner();
-        m_Parameters = new ArrayList<>();
+        List<String> m_Parameters = new ArrayList<>();
+        scan.nextLine();
+        System.out.print("Action: ");
         String input = scan.nextLine();
         String[] szAll = input.split("\\s+");
         String action = szAll[0];
